@@ -1,0 +1,52 @@
+[Unit]
+Description=HandoffIQ Backend Application Service
+After=syslog.target network.target mysql.service
+
+[Service]
+Type=simple
+User=handoffiq
+Group=handoffiq
+
+# Working directory where logs and artifacts reside
+WorkingDirectory=/opt/handoffiq/backend
+
+# JVM Options tuned for AWS EC2 (e.g. t3.medium / t3.large)
+Environment="JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto"
+Environment="SPRING_PROFILES_ACTIVE=mysql,prod"
+Environment="SERVER_PORT=8080"
+
+# Database Configuration (AWS RDS MySQL)
+Environment="DB_HOST=handoffiq-db.cxxxx.us-east-1.rds.amazonaws.com"
+Environment="DB_PORT=3306"
+Environment="DB_NAME=handoffiq"
+Environment="DB_USERNAME=handoffiq_app"
+EnvironmentFile=/etc/handoffiq/secrets.env
+
+# Execution Command with G1GC garbage collection and heap sizing
+ExecStart=/usr/lib/jvm/java-21-amazon-corretto/bin/java \
+    -Xms1024m \
+    -Xmx2048m \
+    -XX:+UseG1GC \
+    -XX:MaxGCPauseMillis=200 \
+    -XX:+ExplicitGCInvokesConcurrent \
+    -Djava.security.egd=file:/dev/./urandom \
+    -Dfile.encoding=UTF-8 \
+    -jar /opt/handoffiq/backend/handoffiq-backend-1.0.0.jar
+
+# Restart Policy
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+
+# Security Restrictions
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+
+# Standard output and error logging (also captured by CloudWatch Agent)
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=handoffiq-backend
+
+[Install]
+WantedBy=multi-user.target
