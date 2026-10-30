@@ -1,0 +1,14 @@
+.git
+.gitignore
+.dockerignore
+*.md
+.env*
+!.env.example
+.idea
+.vscode
+*.iml
+logs/
+target/
+node_modules/
+dist/
+build/
