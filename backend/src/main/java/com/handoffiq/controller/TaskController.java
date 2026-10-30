@@ -40,8 +40,14 @@ public class TaskController {
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String priority,
             @RequestParam(required = false) Long projectId,
-            @RequestParam(required = false) Long assigneeId) {
-        List<TaskResponse> tasks = taskService.getAllTasks(status, priority, projectId, assigneeId);
+            @RequestParam(required = false) Long assigneeId,
+            @RequestParam(required = false) Boolean myTasksOnly,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        Long effectiveAssigneeId = assigneeId;
+        if (Boolean.TRUE.equals(myTasksOnly) && principal != null) {
+            effectiveAssigneeId = principal.getId();
+        }
+        List<TaskResponse> tasks = taskService.getAllTasks(status, priority, projectId, effectiveAssigneeId);
         return ResponseEntity.ok(tasks);
     }
 

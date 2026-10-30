@@ -122,7 +122,22 @@ public class HandoverService {
 
     @Transactional(readOnly = true)
     public List<HandoverResponse> getAllHandovers() {
-        return handoverRepository.findAllByOrderByCreatedAtDesc().stream()
+        return getAllHandovers(null, null, null);
+    }
+
+    @Transactional(readOnly = true)
+    public List<HandoverResponse> getAllHandovers(String status, Long projectId, Long employeeId) {
+        List<Handover> handovers;
+        if (projectId != null) {
+            handovers = handoverRepository.findByProjectId(projectId);
+        } else if (employeeId != null) {
+            handovers = handoverRepository.findByParticipantUserId(employeeId);
+        } else {
+            handovers = handoverRepository.findAllByOrderByCreatedAtDesc();
+        }
+
+        return handovers.stream()
+                .filter(h -> status == null || status.equalsIgnoreCase(h.getStatus()))
                 .map(h -> mapToHandoverResponse(h, null))
                 .collect(Collectors.toList());
     }

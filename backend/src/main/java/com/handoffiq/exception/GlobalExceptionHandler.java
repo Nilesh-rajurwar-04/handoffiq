@@ -74,11 +74,14 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = error instanceof FieldError ? ((FieldError) error).getField() : error.getObjectName();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            errors.put(fieldName, errorMessage != null && !errorMessage.isBlank() ? errorMessage : "Invalid value for " + fieldName);
         });
         log.warn("Validation error on fields: {}", errors.keySet());
 
-        String displayMessage = errors.values().stream().findFirst().orElse("One or more input fields failed validation");
+        String displayMessage = errors.values().stream()
+                .filter(m -> m != null && !m.isBlank())
+                .findFirst()
+                .orElse("Please review the input fields and try again.");
 
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),

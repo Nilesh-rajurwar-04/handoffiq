@@ -1,5 +1,6 @@
 package com.handoffiq.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
 public class LoginRequest {
@@ -19,6 +20,16 @@ public class LoginRequest {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    @JsonProperty("username")
+    public String getUsername() { return email; }
+
+    @JsonProperty("username")
+    public void setUsername(String username) {
+        if (this.email == null || this.email.isBlank()) {
+            this.email = username;
+        }
+    }
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }

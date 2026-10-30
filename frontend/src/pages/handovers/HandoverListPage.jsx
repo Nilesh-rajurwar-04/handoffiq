@@ -48,13 +48,16 @@ export default function HandoverListPage() {
         projectApi.getProjects()
       ]);
       if (handoversRes.status === 'fulfilled') {
-        setHandovers(handoversRes.value.data || []);
+        const data = handoversRes.value?.data;
+        setHandovers(Array.isArray(data) ? data : (data?.content || []));
       } else {
         console.error('Failed to fetch handovers:', handoversRes.reason);
-        setError('Failed to fetch handovers.');
+        const isConnErr = !handoversRes.reason?.response;
+        setError(isConnErr ? 'Cannot connect to backend server. Please verify backend is running on port 8085.' : (handoversRes.reason?.response?.data?.message || 'Failed to fetch handovers.'));
       }
       if (projectsRes.status === 'fulfilled') {
-        setProjects(projectsRes.value.data || []);
+        const pData = projectsRes.value?.data;
+        setProjects(Array.isArray(pData) ? pData : (pData?.content || []));
       }
     } catch (err) {
       console.error(err);

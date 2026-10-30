@@ -34,9 +34,12 @@ public class HandoverController {
     }
 
     @GetMapping
-    @Operation(summary = "List all employee handovers")
-    public ResponseEntity<List<HandoverResponse>> getAllHandovers() {
-        List<HandoverResponse> handovers = handoverService.getAllHandovers();
+    @Operation(summary = "List all employee handovers with optional status and project filtering")
+    public ResponseEntity<List<HandoverResponse>> getAllHandovers(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Long projectId,
+            @RequestParam(required = false) Long employeeId) {
+        List<HandoverResponse> handovers = handoverService.getAllHandovers(status, projectId, employeeId);
         return ResponseEntity.ok(handovers);
     }
 

@@ -71,7 +71,8 @@ export default function DashboardPage() {
         setMyPriorityTasks(tasksRes.value.data?.content || tasksRes.value.data || []);
       }
       if (metricsRes.status === 'rejected' && activitiesRes.status === 'rejected') {
-        setError('Could not load live dashboard data. Using system defaults.');
+        const isConnErr = !metricsRes.reason?.response && !activitiesRes.reason?.response;
+        setError(isConnErr ? 'Backend server disconnected. Please verify backend is running on port 8085.' : 'Could not load live dashboard data. Using system defaults.');
       }
     } catch (err) {
       console.error('Dashboard load error:', err);

@@ -34,8 +34,9 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  const login = async (email, password) => {
-    const res = await authApi.login({ email, password });
+  const login = async (identifier, password) => {
+    const cleanId = identifier ? String(identifier).trim() : '';
+    const res = await authApi.login({ email: cleanId, username: cleanId, password });
     const { token, ...userData } = res.data;
     localStorage.setItem('handoffiq_token', token);
     localStorage.setItem('handoffiq_user', JSON.stringify(userData));

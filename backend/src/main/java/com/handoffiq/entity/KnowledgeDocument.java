@@ -26,11 +26,11 @@ public class KnowledgeDocument {
     @Column(name = "file_size")
     private Long fileSize;
 
-    @Column(name = "storage_path", length = 500)
+    @Column(name = "storage_path", length = 1000)
     private String storagePath;
 
     @Column(name = "s3_key", length = 500)
-    private String s3Key;
+    private String cloudinaryPublicId;
 
     @Column(length = 50)
     private String category = "PROJECT_DOC"; // TECHNICAL, PROCESS, MEETING_NOTES, HANDOVER, PROJECT_DOC
@@ -83,8 +83,11 @@ public class KnowledgeDocument {
     public String getStoragePath() { return storagePath; }
     public void setStoragePath(String storagePath) { this.storagePath = storagePath; }
 
-    public String getS3Key() { return s3Key; }
-    public void setS3Key(String s3Key) { this.s3Key = s3Key; }
+    public String getCloudinaryPublicId() { return cloudinaryPublicId; }
+    public void setCloudinaryPublicId(String cloudinaryPublicId) { this.cloudinaryPublicId = cloudinaryPublicId; }
+
+    public String getS3Key() { return cloudinaryPublicId; }
+    public void setS3Key(String s3Key) { this.cloudinaryPublicId = s3Key; }
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }

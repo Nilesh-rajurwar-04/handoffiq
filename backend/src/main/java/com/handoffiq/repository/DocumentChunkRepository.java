@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface DocumentChunkRepository extends JpaRepository<DocumentChunk, Long> {
     List<DocumentChunk> findByDocumentIdOrderByChunkIndexAsc(Long documentId);
+    void deleteByDocumentId(Long documentId);
 
     @Query("SELECT c FROM DocumentChunk c WHERE LOWER(c.chunkText) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<DocumentChunk> searchChunks(@Param("keyword") String keyword);

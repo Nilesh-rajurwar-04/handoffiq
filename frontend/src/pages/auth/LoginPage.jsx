@@ -16,17 +16,18 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
-    if (!username || !password) {
+    const cleanUser = username?.trim();
+    if (!cleanUser || !password) {
       setError('Please provide both username and password.');
       return;
     }
     setError(null);
     setLoading(true);
     try {
-      await login(username, password);
+      await login(cleanUser, password);
       navigate('/dashboard');
     } catch (err) {
-      const serverErrors = err?.response?.data?.errors;
+      const serverErrors = err?.response?.data?.validationErrors || err?.response?.data?.errors;
       const detail = serverErrors ? Object.values(serverErrors).join(', ') : null;
       setError(detail || err?.response?.data?.message || err.message || 'Login failed. Please verify credentials.');
     } finally {

@@ -39,10 +39,11 @@ services:
       - AI_TIMEOUT_MS=${AI_TIMEOUT_MS:-15000}
       # CORS (allow wildcard or specific domains)
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-*}
-      # Storage
-      - STORAGE_TYPE=${STORAGE_TYPE:-local}
-      - AWS_S3_BUCKET=${AWS_S3_BUCKET:-}
-      - AWS_REGION=${AWS_REGION:-us-east-1}
+      # Storage (Cloudinary File & Image Storage)
+      - STORAGE_TYPE=${STORAGE_TYPE:-cloudinary}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME:-}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-}
     # Only expose port 8085 inside the Docker network (NOT to the public internet)
     expose:
       - "8085"

@@ -11,6 +11,9 @@ public class DocumentResponse {
     private String fileType;
     private Long fileSize;
     private String storagePath;
+    private String fileUrl;
+    private String publicId;
+    private String storageProvider;
     private String category;
     private Long uploadedById;
     private String uploadedByName;
@@ -36,6 +39,12 @@ public class DocumentResponse {
     public void setFileSize(Long fileSize) { this.fileSize = fileSize; }
     public String getStoragePath() { return storagePath; }
     public void setStoragePath(String storagePath) { this.storagePath = storagePath; }
+    public String getFileUrl() { return fileUrl; }
+    public void setFileUrl(String fileUrl) { this.fileUrl = fileUrl; }
+    public String getPublicId() { return publicId; }
+    public void setPublicId(String publicId) { this.publicId = publicId; }
+    public String getStorageProvider() { return storageProvider; }
+    public void setStorageProvider(String storageProvider) { this.storageProvider = storageProvider; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
     public Long getUploadedById() { return uploadedById; }

@@ -121,6 +121,9 @@ export const documentsApi = {
   }),
   createDocument: (data) => api.post('/documents', data),
   search: (query) => api.get('/documents/search', { params: { query } }),
+  download: (id) => api.get(`/documents/${id}/download`, { responseType: 'blob' }),
+  delete: (id) => api.delete(`/documents/${id}`),
+  deleteDocument: (id) => api.delete(`/documents/${id}`),
 };
 
 export const notificationsApi = {

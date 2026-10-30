@@ -81,16 +81,20 @@ export default function TaskListPage() {
         userApi.getUsers()
       ]);
       if (tasksRes.status === 'fulfilled') {
-        setTasks(tasksRes.value.data?.content || tasksRes.value.data || []);
+        const data = tasksRes.value?.data;
+        setTasks(Array.isArray(data) ? data : (data?.content || []));
       } else {
         console.error('Failed to fetch tasks:', tasksRes.reason);
-        setError('Failed to fetch tasks.');
+        const isConnErr = !tasksRes.reason?.response;
+        setError(isConnErr ? 'Cannot connect to backend server. Please verify backend is running on port 8085.' : (tasksRes.reason?.response?.data?.message || 'Failed to fetch tasks.'));
       }
       if (projectsRes.status === 'fulfilled') {
-        setProjects(projectsRes.value.data || []);
+        const pData = projectsRes.value?.data;
+        setProjects(Array.isArray(pData) ? pData : (pData?.content || []));
       }
       if (usersRes.status === 'fulfilled') {
-        setUsers(usersRes.value.data || []);
+        const uData = usersRes.value?.data;
+        setUsers(Array.isArray(uData) ? uData : (uData?.content || []));
       }
     } catch (err) {
       console.error(err);

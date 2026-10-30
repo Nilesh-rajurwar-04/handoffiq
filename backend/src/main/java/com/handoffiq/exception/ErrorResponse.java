@@ -53,4 +53,7 @@ public class ErrorResponse {
 
     public Map<String, String> getValidationErrors() { return validationErrors; }
     public void setValidationErrors(Map<String, String> validationErrors) { this.validationErrors = validationErrors; }
+
+    public Map<String, String> getErrors() { return validationErrors; }
+    public void setErrors(Map<String, String> errors) { this.validationErrors = errors; }
 }
