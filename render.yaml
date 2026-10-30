@@ -1,0 +1,54 @@
+# ==============================================================================
+# Render Blueprint Specification for HandoffIQ
+# ==============================================================================
+# Docs: https://render.com/docs/blueprint-spec
+# To deploy: Connect your Git repository in Render -> Click "New +" -> "Blueprint"
+# ==============================================================================
+
+services:
+  # ----------------------------------------------------------------------------
+  # OPTION 1 (RECOMMENDED): Unified Full-Stack Web Service
+  # Builds both React frontend and Spring Boot Java 21 backend into 1 single service.
+  # - Zero CORS configuration needed
+  # - 100% Free Tier Compatible (Uses only 1 free instance)
+  # - Automatic Flyway schema creation and seed on fresh database boot
+  # ----------------------------------------------------------------------------
+  - type: web
+    name: handoffiq-app
+    runtime: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /api/dashboard/stats
+    envVars:
+      - key: PORT
+        value: 8085
+
+      # Set to 'true' on cloud database so all 24 tables & seed records auto-generate
+      - key: SPRING_FLYWAY_ENABLED
+        value: "true"
+
+      # External Cloud MySQL Connection URL (e.g., Aiven, TiDB Cloud, Clever Cloud, Railway)
+      # Format: jdbc:mysql://<host>:<port>/<dbname>?useSSL=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+
+      # AI Provider (gemini | openai | fallback)
+      - key: AI_PROVIDER
+        value: gemini
+
+      - key: GEMINI_API_KEY
+        sync: false
+
+      - key: OPENAI_API_KEY
+        sync: false
+
+      # Production JWT Signing Secret
+      - key: JWT_SECRET
+        generateValue: true
